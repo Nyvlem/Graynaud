@@ -7,6 +7,7 @@ public class Graynaud extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		getLogger().info("Plugin lancé chef ! graynaud paré a l'attaque !");
+		getServer().getPluginManager().registerEvents(new Lavaswimlistener(), this);
 	}
 	
 	@Override
