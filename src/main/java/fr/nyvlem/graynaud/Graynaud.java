@@ -1,5 +1,6 @@
 package fr.nyvlem.graynaud;
 
+import fr.nyvlem.graynaud.lavaswim.Lavaswimlistener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Graynaud extends JavaPlugin {

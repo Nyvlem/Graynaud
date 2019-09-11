@@ -10,13 +10,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class Lavaswimlistener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
-    void onPlayerMove(PlayerMoveEvent e){
-        Player player = e.getPlayer();
-        Material m = player.getLocation().getBlock().getType();
-        if(m == Material.LAVA){
+    void onPlayerMove(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        Material material = player.getLocation().getBlock().getType();
+        if(material == Material.LAVA){
             //Joueur dans la lave
             if(player.isSprinting()){
                 player.setGliding(true);
+                //0.32 est la valeur limite pour que le gliding ne bug pas lors d'une nage dans trop peu de lave
                 player.setVelocity(player.getLocation().getDirection().multiply(0.32));
             }
         }
