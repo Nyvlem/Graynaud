@@ -1,6 +1,7 @@
 package fr.nyvlem.graynaud;
 
 import fr.nyvlem.graynaud.gamemode_inventory.GameModeInventoryListener;
+import fr.nyvlem.graynaud.lavaswim.Lavaswimlistener;
 import fr.nyvlem.graynaud.utils.Constants;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,11 +18,14 @@ public class Graynaud extends JavaPlugin {
 		loadConfig();
 
 		boolean enableGamemodeInventory = config.getBoolean(Constants.GAMEMODE_INVETORY_CONFIG_PATH, false);
+		boolean enableLavaswim = config.getBoolean(Constants.LAVASWIM_CONFIG_PATH, false);
 
 		if (enableGamemodeInventory) {
 			getServer().getPluginManager().registerEvents(new GameModeInventoryListener(this), this);
 		}
-
+		if (enableLavaswim) {
+			getServer().getPluginManager().registerEvents(new Lavaswimlistener(), this);
+		}
 		getLogger().info("Graynaud enabled !");
 	}
 
