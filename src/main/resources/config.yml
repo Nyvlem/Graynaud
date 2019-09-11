@@ -1,0 +1,2 @@
+# enable gamemode inventory, to have separate inventory for each gamemode
+gamemode-inventory: true
