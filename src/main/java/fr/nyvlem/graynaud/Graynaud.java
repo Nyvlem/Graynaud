@@ -7,12 +7,12 @@ public class Graynaud extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		getLogger().info("Plugin lancé chef ! graynaud paré a l'attaque !");
+		getLogger().info("Graynaud ready !");
 		getServer().getPluginManager().registerEvents(new Lavaswimlistener(), this);
 	}
 	
 	@Override
 	public void onDisable() {
-		getLogger().info("Ok on remballe.");
+		getLogger().info("Graynaud successfully unloaded.");
 	}
 }

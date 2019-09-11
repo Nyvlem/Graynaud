@@ -14,10 +14,10 @@ public class Lavaswimlistener implements Listener {
         Player player = event.getPlayer();
         Material material = player.getLocation().getBlock().getType();
         if(material == Material.LAVA){
-            //Joueur dans la lave
+            //Player in lava
             if(player.isSprinting()){
                 player.setGliding(true);
-                //0.32 est la valeur limite pour que le gliding ne bug pas lors d'une nage dans trop peu de lave
+                //0.32 is limit value before gliding animation bug in a small amount of lava
                 player.setVelocity(player.getLocation().getDirection().multiply(0.32));
             }
         }
