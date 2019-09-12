@@ -6,7 +6,7 @@
 
   <groupId>fr.nyvlem</groupId>
   <artifactId>Graynaud</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
