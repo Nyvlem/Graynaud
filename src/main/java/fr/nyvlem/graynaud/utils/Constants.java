@@ -7,4 +7,5 @@ public final class Constants {
     public static final String DATA_FOLDER = "data";
     public static final String GAMEMODE_INVETORY_CONFIG_PATH = "gamemode-inventory";
     public static final String LAVASWIM_CONFIG_PATH = "Lavaswim";
+    public static final String MCMMO_CONFIG_PATH = "mcmmo";
 }

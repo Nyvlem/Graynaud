@@ -1,5 +1,7 @@
 package fr.nyvlem.graynaud;
 
+import com.gmail.nossr50.api.PartyAPI;
+import com.gmail.nossr50.datatypes.party.Party;
 import fr.nyvlem.graynaud.gamemode_inventory.GameModeInventoryListener;
 import fr.nyvlem.graynaud.lavaswim.Lavaswimlistener;
 import fr.nyvlem.graynaud.utils.Constants;
@@ -8,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.stream.Collectors;
 
 public class Graynaud extends JavaPlugin {
 
@@ -19,13 +22,20 @@ public class Graynaud extends JavaPlugin {
 
 		boolean enableGamemodeInventory = config.getBoolean(Constants.GAMEMODE_INVETORY_CONFIG_PATH, false);
 		boolean enableLavaswim = config.getBoolean(Constants.LAVASWIM_CONFIG_PATH, false);
+		boolean enableMcmmo = config.getBoolean(Constants.MCMMO_CONFIG_PATH, false);
 
 		if (enableGamemodeInventory) {
 			getServer().getPluginManager().registerEvents(new GameModeInventoryListener(this), this);
 		}
+
 		if (enableLavaswim) {
 			getServer().getPluginManager().registerEvents(new Lavaswimlistener(), this);
 		}
+
+		if (enableMcmmo) {
+			getLogger().info("Parties: " + PartyAPI.getParties().stream().map(Party::getName).collect(Collectors.joining(";")));
+		}
+
 		getLogger().info("Graynaud enabled !");
 	}
 

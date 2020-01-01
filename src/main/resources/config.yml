@@ -3,3 +3,6 @@ gamemode-inventory: true
 
 # enable LavaSwim, to be able to swim in lava
 Lavaswim: true
+
+# enable Mcmmo, to be able to do things with mcmmo
+mcmmo: true
