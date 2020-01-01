@@ -6,13 +6,13 @@
 
   <groupId>fr.nyvlem</groupId>
   <artifactId>Graynaud</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <spigot.version>1.14.4-R0.1-SNAPSHOT</spigot.version>
+    <spigot.version>1.15.1-R0.1-SNAPSHOT</spigot.version>
   </properties>
 
   <repositories>
