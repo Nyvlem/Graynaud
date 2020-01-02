@@ -1,5 +1,6 @@
 name: graynaud
 version: "1.1"
-author: nyvlem
+authors: [Nyvlem, AssassinBlanc]
 main: fr.nyvlem.graynaud.Graynaud
 api-version: "1.15"
+softdepend: [mcMMO]
