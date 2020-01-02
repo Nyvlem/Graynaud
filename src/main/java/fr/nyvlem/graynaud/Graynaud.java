@@ -32,9 +32,14 @@ public class Graynaud extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new Lavaswimlistener(), this);
 		}
 
-		if (enableMcmmo) {
-			getLogger().info("Parties: " + PartyAPI.getParties().stream().map(Party::getName).collect(Collectors.joining(";")));
-		}
+		if(getServer().getPluginManager().getPlugin("mcMMO") != null) {
+            if (enableMcmmo) {
+                getLogger().info("Parties: " + PartyAPI.getParties().stream().map(Party::getName).collect(Collectors.joining(";")));
+            }
+        }else{
+		    config.set(Constants.MCMMO_CONFIG_PATH, false);
+            enableMcmmo = false;
+        }
 
 		getLogger().info("Graynaud enabled !");
 	}
