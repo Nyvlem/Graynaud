@@ -37,7 +37,6 @@ public class Graynaud extends JavaPlugin {
                 getLogger().info("Parties: " + PartyAPI.getParties().stream().map(Party::getName).collect(Collectors.joining(";")));
             }
         }else{
-		    config.set(Constants.MCMMO_CONFIG_PATH, false);
             enableMcmmo = false;
         }
 
