@@ -16,4 +16,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Deploy with Maven
-      run: mvn -B deploy --file pom.xml
+      run: mvn -B deploy -Dtoken=GH_TOKEN --file pom.xml 
