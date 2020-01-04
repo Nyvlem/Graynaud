@@ -1,0 +1,5 @@
+# enable gamemode inventory, to have separate inventory for each gamemode
+gamemode-inventory: true
+
+# enable LavaSwim, to be able to swim in lava
+Lavaswim: true
