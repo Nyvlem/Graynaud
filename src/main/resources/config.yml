@@ -6,3 +6,12 @@ Lavaswim: true
 
 # enable Mcmmo, to be able to do things with mcmmo
 mcmmo: true
+
+# Put this on true to respawn at party spawn location on death
+party-respawn: false
+
+#At wich party level can you use /grparty spawn ? (Unlocked even if you lose levels after) put -1 to disable the feature
+setspawn-level: 50
+
+#The delay before teleporting the player (in seconds)
+teleport-delay: 3

@@ -4,3 +4,13 @@ authors: [Nyvlem, AssassinBlanc]
 main: fr.nyvlem.graynaud.Graynaud
 api-version: "1.15"
 softdepend: [mcMMO]
+commands:
+  GrParty:
+    description: Base command
+    permission: party
+  GrParty setspawn:
+    description: Set the spawnpoint for the party
+    permission: party.setspawn
+  GrParty spawn:
+    description: Go to the spawn of your party
+    permission: party.spawn
