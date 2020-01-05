@@ -8,11 +8,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public final class GraynaudPartyManager {
 
     private static String partiesFilePath = "plugins/graynaud/parties.yml";
-    private static HashMap<String, GraynaudParty> parties = new HashMap<String, GraynaudParty>();
+    private static Map<String, GraynaudParty> parties = new HashMap<>();
     private static File partyFile = new File(partiesFilePath);
 
     private GraynaudPartyManager() {
@@ -136,11 +137,8 @@ public final class GraynaudPartyManager {
         YamlConfiguration partiesFile = new YamlConfiguration();
 
         Graynaud.GRAYNAUD.getLogger().info("Saving Parties... (" + parties.size() + ")");
-        parties.forEach((partyName, party) -> {
 
-            party.toYaml(partiesFile);
-
-        });
+        parties.forEach((partyName, party) -> party.toYaml(partiesFile));
 
         try {
             partiesFile.save(partyFile);

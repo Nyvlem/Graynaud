@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class Graynaud extends JavaPlugin {
 
-	public static Graynaud GRAYNAUD;
-	private FileConfiguration config;
+    public static Graynaud GRAYNAUD;
+    private FileConfiguration config;
 
     private static int setSpawnLevel;
     private static int teleportDelay;
@@ -32,6 +32,13 @@ public class Graynaud extends JavaPlugin {
         return teleportDelay;
     }
 
+    public static void setSetSpawnLevel(int spawnLevel) {
+        Graynaud.setSpawnLevel = spawnLevel;
+    }
+
+    public static void setTeleportDelay(int teleportDelay) {
+        Graynaud.teleportDelay = teleportDelay;
+    }
 
     @Override
     public void onEnable() {
@@ -43,8 +50,8 @@ public class Graynaud extends JavaPlugin {
         boolean enableLavaswim = config.getBoolean(Constants.LAVASWIM_CONFIG_PATH, false);
         boolean enableMcmmo = config.getBoolean(Constants.MCMMO_CONFIG_PATH, false);
         boolean enableSpawnToPartySpawn = config.getBoolean(Constants.PARTY_RESPAWN_PATH, false);
-        setSpawnLevel = config.getInt(Constants.PARTY_SETSPAWN_LEVEL_PATH, 50);
-        teleportDelay = config.getInt(Constants.PARTY_TELEPORT_DELAY_PATH, 3);
+        setSetSpawnLevel(config.getInt(Constants.PARTY_SETSPAWN_LEVEL_PATH, 50));
+        setTeleportDelay(config.getInt(Constants.PARTY_TELEPORT_DELAY_PATH, 3));
 
 
         if (enableGamemodeInventory) {
