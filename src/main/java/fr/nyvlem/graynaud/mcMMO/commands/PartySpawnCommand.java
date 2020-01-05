@@ -18,26 +18,26 @@ public class PartySpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender instanceof Player){
-            Player player = (Player)sender;
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             String partyName = PartyAPI.getPartyName(player);
-            if (!GraynaudPartyManager.getParty(partyName).isUnlockedPartySpawn()){
+            if (!GraynaudPartyManager.getParty(partyName).isUnlockedPartySpawn()) {
                 if (PartyManager.getParty(player).getLevel() >= Graynaud.getSpawnLevel()) {
-                    GraynaudPartyManager.getParty(partyName).setunlockedPartySpawn(true);
-                }else{
-                    player.sendMessage(ChatColor.GOLD + "Your party need to be level " + Graynaud.getSpawnLevel() +" to unlock party spawn and your party is level "+PartyManager.getParty(player).getLevel());
+                    GraynaudPartyManager.getParty(partyName).setUnlockedPartySpawn(true);
+                } else {
+                    player.sendMessage(ChatColor.GOLD + "Your party need to be level " + Graynaud.getSpawnLevel() + " to unlock party spawn and your party is level " + PartyManager.getParty(player).getLevel());
                     return false;
                 }
             }
             Location destination = GraynaudPartyManager.getSpawnPoint(partyName);
 
-            if(destination == null){
+            if (destination == null) {
                 player.sendMessage(ChatColor.GOLD + "Spawnpoint not found.");
-            }else{
-                if(Graynaud.getTeleportDelay()>0){
-                    player.sendMessage(ChatColor.GOLD + "Teleporting in ("+Graynaud.getTeleportDelay()+") seconds. Move to cancel.");
+            } else {
+                if (Graynaud.getTeleportDelay() > 0) {
+                    player.sendMessage(ChatColor.GOLD + "Teleporting in (" + Graynaud.getTeleportDelay() + ") seconds. Move to cancel.");
                 }
-                PlayerListener.teleportingPlayer(Graynaud.getTeleportDelay(),player,destination);
+                PlayerListener.teleportingPlayer(Graynaud.getTeleportDelay(), player, destination);
             }
         }
         return false;

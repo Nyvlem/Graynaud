@@ -7,17 +7,16 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
+import java.util.HashMap;
 
 public final class GraynaudPartyManager {
 
-    private static String partiesFilePath =   "plugins/graynaud/parties.yml";
-    private static List<GraynaudParty> parties = new ArrayList<GraynaudParty>();
+    private static String partiesFilePath = "plugins/graynaud/parties.yml";
+    private static HashMap<String, GraynaudParty> parties = new HashMap<String, GraynaudParty>();
     private static File partyFile = new File(partiesFilePath);
 
-    private GraynaudPartyManager() {}
+    private GraynaudPartyManager() {
+    }
 
     /**
      * Retrieve a GraynaudParty by its name
@@ -26,30 +25,24 @@ public final class GraynaudPartyManager {
      * @return the existing party, null otherwise
      */
     public static GraynaudParty getParty(String partyName) {
-        for (GraynaudParty party : parties) {
-            if (party.getName().equalsIgnoreCase(partyName)) {
-                return party;
-            }
-        }
-
-        return null;
+        return parties.getOrDefault(partyName, null);
     }
 
 
     /**
      * Set the spawnpoint for a party
      *
-     * @param partyName The party name
+     * @param partyName  The party name
      * @param spawnpoint The spawnpoint you want for the party
      */
     public static void setSpawnPoint(String partyName, Location spawnpoint) {
 
-        if(getParty(partyName) == null){
+        if (getParty(partyName) == null) {
             Graynaud.GRAYNAUD.getLogger().info("GraynaudParty " + partyName + " doesn't exist.");
-            if(PartyManager.getParty(partyName) != null){
+            if (PartyManager.getParty(partyName) != null) {
                 Graynaud.GRAYNAUD.getLogger().info("Creating party... ");
                 GraynaudPartyManager.createParty(partyName);
-            }else{
+            } else {
                 Graynaud.GRAYNAUD.getLogger().warning("No party corresponding in mcMMO, create one before trying to set a spawnpoint.");
                 return;
             }
@@ -68,7 +61,7 @@ public final class GraynaudPartyManager {
 
         GraynaudParty party = getParty(partyName);
 
-        if(party == null){
+        if (party == null) {
             Graynaud.GRAYNAUD.getLogger().warning("Spawnpoint for " + partyName + " doesn't exist. Set the spawnpoint before.");
             return null;
         }
@@ -83,12 +76,12 @@ public final class GraynaudPartyManager {
      */
     public static void createParty(String partyName) {
 
-        if(getParty(partyName)!=null){
+        if (getParty(partyName) != null) {
             Graynaud.GRAYNAUD.getLogger().warning("Name already taken.");
-        }else {
+        } else {
             GraynaudParty party = new GraynaudParty(partyName);
 
-            parties.add(party);
+            parties.put(partyName, party);
         }
         GraynaudPartyManager.saveParties();
     }
@@ -119,11 +112,12 @@ public final class GraynaudPartyManager {
                         partiesFile.getLong(partyName + ".Spawnpoint.yaw")));
 
 
-                parties.add(party);
+                parties.put(partyName, party);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Graynaud.GRAYNAUD.getLogger().warning("Loading parties failed.");
+            ;
         }
 
     }
@@ -142,22 +136,17 @@ public final class GraynaudPartyManager {
         YamlConfiguration partiesFile = new YamlConfiguration();
 
         Graynaud.GRAYNAUD.getLogger().info("Saving Parties... (" + parties.size() + ")");
-        for (GraynaudParty party : parties) {
-            String partyName = party.getName();
+        parties.forEach((partyName, party) -> {
 
-            partiesFile.set(partyName + ".Spawnpoint.world", party.getSpawnpoint().getWorld().getName());
-            partiesFile.set(partyName + ".Spawnpoint.x", party.getSpawnpoint().getX());
-            partiesFile.set(partyName + ".Spawnpoint.y", party.getSpawnpoint().getY());
-            partiesFile.set(partyName + ".Spawnpoint.z", party.getSpawnpoint().getZ());
-            partiesFile.set(partyName + ".Spawnpoint.pitch", party.getSpawnpoint().getPitch());
-            partiesFile.set(partyName + ".Spawnpoint.yaw", party.getSpawnpoint().getYaw());
-        }
+            party.toYaml(partiesFile.getConfigurationSection(partiesFilePath));
+
+        });
 
         try {
             partiesFile.save(partyFile);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Graynaud.GRAYNAUD.getLogger().warning("Saving parties failed.");
+            ;
         }
     }
 
