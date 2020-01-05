@@ -138,7 +138,7 @@ public final class GraynaudPartyManager {
         Graynaud.GRAYNAUD.getLogger().info("Saving Parties... (" + parties.size() + ")");
         parties.forEach((partyName, party) -> {
 
-            party.toYaml(partiesFile.getConfigurationSection(partiesFilePath));
+            party.toYaml(partiesFile);
 
         });
 
