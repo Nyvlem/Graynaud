@@ -8,7 +8,8 @@ import java.io.File;
 
 public final class Utils {
 
-    private Utils() {}
+    private Utils() {
+    }
 
     public static File getDataFileForPlayer(JavaPlugin plugin, Player player) {
         return new File(plugin.getDataFolder() + File.separator + Constants.DATA_FOLDER + File.separator + player.getUniqueId() + ".yml");
