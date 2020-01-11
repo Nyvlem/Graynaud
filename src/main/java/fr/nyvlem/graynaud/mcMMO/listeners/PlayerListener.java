@@ -23,40 +23,38 @@ public class PlayerListener implements Listener {
         PlayerListener.plugin = plugin;
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        final Player p = e.getPlayer();
-        if (tpQueue.containsKey(p.getUniqueId())) {
-            tpQueue.get(p.getUniqueId()).cancel();
-            tpQueue.remove(p.getUniqueId());
-            p.sendMessage(ChatColor.GOLD + "Teleportation canceled");
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        final Player player = event.getPlayer();
+
+        BukkitTask bukkitTask = tpQueue.get(player.getUniqueId());
+
+        if (bukkitTask != null) {
+            bukkitTask.cancel();
+            tpQueue.remove(player.getUniqueId());
+            player.sendMessage(ChatColor.GOLD + "Teleportation canceled");
         }
     }
 
     public static void teleportingPlayer(int delay, Player player, Location destination) {
-        tpQueue.put(player.getUniqueId(), new Teleport(delay, player, destination).runTaskTimer(plugin, 0, 20));
+        tpQueue.put(player.getUniqueId(), new Teleport(player, destination).runTaskLater(plugin, 20 * delay));
     }
 
     private static class Teleport extends BukkitRunnable {
-        int delay;
+
         Player player;
         Location destination;
 
-        Teleport(int delay, Player player, Location destination) {
-            this.delay = delay;
+        Teleport(Player player, Location destination) {
             this.player = player;
             this.destination = destination;
         }
 
         @Override
         public void run() {
-            if (delay > 0) {
-                delay--;
-            } else {
-                player.teleport(destination);
-                tpQueue.remove(player.getUniqueId());
-                this.cancel();
-            }
+            player.sendMessage(ChatColor.GOLD + "Teleporting to your party spawn !");
+            player.teleport(destination);
+            tpQueue.remove(player.getUniqueId());
         }
     }
 }

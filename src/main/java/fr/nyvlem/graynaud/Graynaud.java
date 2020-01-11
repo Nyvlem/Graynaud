@@ -6,6 +6,7 @@ import fr.nyvlem.graynaud.gamemode_inventory.GameModeInventoryListener;
 import fr.nyvlem.graynaud.lavaswim.Lavaswimlistener;
 import fr.nyvlem.graynaud.mcMMO.commands.PartyCommand;
 import fr.nyvlem.graynaud.mcMMO.GraynaudPartyManager;
+import fr.nyvlem.graynaud.mcMMO.listeners.McMMOEventListener;
 import fr.nyvlem.graynaud.mcMMO.listeners.PartyPlayerDeathListener;
 import fr.nyvlem.graynaud.mcMMO.listeners.PlayerListener;
 import fr.nyvlem.graynaud.utils.Constants;
@@ -19,25 +20,25 @@ import java.util.stream.Collectors;
 public class Graynaud extends JavaPlugin {
 
     public static Graynaud GRAYNAUD;
+
     private FileConfiguration config;
 
-    private static int setSpawnLevel;
+    private static String dataDirectory;
+
+    private static int spawnLevel;
+
     private static int teleportDelay;
 
+    public static String getDataDirectory() {
+        return dataDirectory;
+    }
+
     public static int getSpawnLevel() {
-        return setSpawnLevel;
+        return spawnLevel;
     }
 
     public static int getTeleportDelay() {
         return teleportDelay;
-    }
-
-    public static void setSetSpawnLevel(int spawnLevel) {
-        Graynaud.setSpawnLevel = spawnLevel;
-    }
-
-    public static void setTeleportDelay(int teleportDelay) {
-        Graynaud.teleportDelay = teleportDelay;
     }
 
     @Override
@@ -45,14 +46,12 @@ public class Graynaud extends JavaPlugin {
         loadConfig();
 
         GRAYNAUD = this;
+        dataDirectory = getDataFolder().getPath() + File.separator + "data" + File.separator;
 
         boolean enableGamemodeInventory = config.getBoolean(Constants.GAMEMODE_INVETORY_CONFIG_PATH, false);
         boolean enableLavaswim = config.getBoolean(Constants.LAVASWIM_CONFIG_PATH, false);
         boolean enableMcmmo = config.getBoolean(Constants.MCMMO_CONFIG_PATH, false);
         boolean enableSpawnToPartySpawn = config.getBoolean(Constants.PARTY_RESPAWN_PATH, false);
-        setSetSpawnLevel(config.getInt(Constants.PARTY_SETSPAWN_LEVEL_PATH, 50));
-        setTeleportDelay(config.getInt(Constants.PARTY_TELEPORT_DELAY_PATH, 3));
-
 
         if (enableGamemodeInventory) {
             getServer().getPluginManager().registerEvents(new GameModeInventoryListener(this), this);
@@ -64,13 +63,17 @@ public class Graynaud extends JavaPlugin {
 
         if (getServer().getPluginManager().getPlugin("mcMMO") != null) {
             if (enableMcmmo) {
+                spawnLevel = config.getInt(Constants.PARTY_SETSPAWN_LEVEL_PATH, 50);
+                teleportDelay = config.getInt(Constants.PARTY_TELEPORT_DELAY_PATH, 3);
+
                 getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+                getServer().getPluginManager().registerEvents(new McMMOEventListener(), this);
 
                 GraynaudPartyManager.loadParties();
 
                 getLogger().info("Parties: " + PartyAPI.getParties().stream().map(Party::getName).collect(Collectors.joining(";")));
 
-                if (setSpawnLevel != -1) {
+                if (spawnLevel != -1) {
                     getCommand("grparty").setExecutor(new PartyCommand());
                 }
 

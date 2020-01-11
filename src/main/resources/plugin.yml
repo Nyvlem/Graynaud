@@ -12,5 +12,5 @@ commands:
     description: Set the spawnpoint for the party
     permission: party.setspawn
   GrParty spawn:
-    description: Go to the spawn of your party
+    description: Teleport to the spawn of your party
     permission: party.spawn
