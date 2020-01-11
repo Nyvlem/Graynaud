@@ -37,18 +37,19 @@ public final class GraynaudPartyManager {
      * Set the spawnpoint for a party
      *
      * @param partyName  The party name
-     * @param spawnpoint The spawnpoint you want for the party
+     * @param spawnPoint The spawnpoint you want for the party
      */
-    public static Location setSpawnPoint(String partyName, Location spawnpoint) {
+    public static Location setSpawnPoint(String partyName, Location spawnPoint) {
         if (getParty(partyName) == null) {
             Graynaud.GRAYNAUD.getLogger().info("GraynaudParty " + partyName + " doesn't exist.");
             return null;
         }
 
-        getParty(partyName).setSpawnPoint(spawnpoint);
+        GraynaudParty party = getParty(partyName);
+        party.setSpawnPoint(spawnPoint);
         saveParties();
 
-        return spawnpoint;
+        return party.getSpawnPoint();
     }
 
     /**
