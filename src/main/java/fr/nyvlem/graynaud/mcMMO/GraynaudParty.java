@@ -1,43 +1,65 @@
 package fr.nyvlem.graynaud.mcMMO;
 
 import com.gmail.nossr50.datatypes.party.Party;
+import fr.nyvlem.graynaud.Graynaud;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
+public class GraynaudParty {
 
-public class GraynaudParty extends Party {
+    private static final String spawnPointSectionPath = "spawnpoint";
 
-    private Location spawnpoint;
-    private boolean unlockedPartySpawn = false;
+    private Party party;
 
-    public GraynaudParty(String name) {
-        super(name);
+    private Location spawnPoint;
+
+    public GraynaudParty(Party party) {
+        this.party = party;
     }
 
-    public void setSpawnpoint(Location spawnpoint) {
-        this.spawnpoint = spawnpoint;
+    public GraynaudParty(Party party, ConfigurationSection partySection) {
+        this(party);
+
+        ConfigurationSection spawnPointSection = partySection.getConfigurationSection(spawnPointSectionPath);
+
+        if (spawnPointSection != null && spawnPointSection.getString("world") != null) {
+            this.spawnPoint = new Location(
+                    Bukkit.getServer().getWorld(spawnPointSection.getString("world")),
+                    spawnPointSection.getDouble("x"),
+                    spawnPointSection.getDouble("y"),
+                    spawnPointSection.getDouble("z"),
+                    spawnPointSection.getLong("pitch"),
+                    spawnPointSection.getLong("yaw")
+            );
+        }
     }
 
-    public Location getSpawnpoint() {
-        return spawnpoint;
+    public Party getParty() {
+        return party;
     }
 
-    public void setUnlockedPartySpawn(boolean state) {
-        this.unlockedPartySpawn = state;
+    public void setSpawnPoint(Location spawnPoint) {
+        this.spawnPoint = spawnPoint;
     }
 
-    public boolean isUnlockedPartySpawn() {
-        return unlockedPartySpawn;
+    public Location getSpawnPoint() {
+        return spawnPoint;
     }
 
-    public void toYaml(ConfigurationSection config) {
-        config.set(this.getName() + ".Spawnpoint.world", this.getSpawnpoint().getWorld().getName());
-        config.set(this.getName() + ".Spawnpoint.x", this.getSpawnpoint().getX());
-        config.set(this.getName() + ".Spawnpoint.y", this.getSpawnpoint().getY());
-        config.set(this.getName() + ".Spawnpoint.z", this.getSpawnpoint().getZ());
-        config.set(this.getName() + ".Spawnpoint.pitch", this.getSpawnpoint().getPitch());
-        config.set(this.getName() + ".Spawnpoint.yaw", this.getSpawnpoint().getYaw());
+    public boolean hasUnlockedPartySpawn() {
+        return this.party.getLevel() >= Graynaud.getSpawnLevel();
     }
 
+    public void toYaml(ConfigurationSection partySection) {
+        if (this.getSpawnPoint() != null && this.spawnPoint.getWorld() != null) {
+            ConfigurationSection spawnPointSection = partySection.createSection(spawnPointSectionPath);
+            spawnPointSection.set("world", this.spawnPoint.getWorld().getName());
+            spawnPointSection.set("x", this.spawnPoint.getX());
+            spawnPointSection.set("y", this.spawnPoint.getY());
+            spawnPointSection.set("z", this.spawnPoint.getZ());
+            spawnPointSection.set("pitch", this.spawnPoint.getPitch());
+            spawnPointSection.set("yaw", this.spawnPoint.getYaw());
+        }
+    }
 }

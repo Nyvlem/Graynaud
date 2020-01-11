@@ -1,6 +1,7 @@
 package fr.nyvlem.graynaud.mcMMO.commands;
 
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,17 +22,23 @@ public class PartyCommand implements TabExecutor {
     private CommandExecutor partySpawnCommand = new PartySpawnCommand();
 
     static {
-        PARTY_SUB_COMMANDS = Arrays.stream(PartySubCommandType.values()).map(Enum::toString).sorted().collect(Collectors.toList());
+        PARTY_SUB_COMMANDS = Arrays.stream(PartySubCommandType.values())
+                                   .map(Enum::toString)
+                                   .sorted()
+                                   .collect(Collectors.toList());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (!(sender instanceof Player)) {
             return false;
         }
 
-        PartySubCommandType subCommand = PartySubCommandType.valueOf(args[0].toUpperCase());
+        PartySubCommandType subCommand = PartySubCommandType.getSubCommand(args[0]);
+
+        if (subCommand == null) {
+            return printUsage((Player) sender);
+        }
 
         switch (subCommand) {
             case SPAWN:
@@ -53,5 +60,12 @@ public class PartyCommand implements TabExecutor {
                 return StringUtil.copyPartialMatches(args[0], PARTY_SUB_COMMANDS, new ArrayList<>(PARTY_SUB_COMMANDS.size()));
         }
         return null;
+    }
+
+    private boolean printUsage(Player player) {
+        player.sendMessage(ChatColor.GOLD + "List of commands: ");
+        player.sendMessage(ChatColor.GOLD + "/grparty setspawn: Set the spawnpoint for the party");
+        player.sendMessage(ChatColor.GOLD + "/grparty spawn: Teleport to the spawn of your party");
+        return true;
     }
 }
